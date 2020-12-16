@@ -3,7 +3,7 @@ const app = express();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 // const cors = require('cors')
-
+const { v4: uuidV4 } = require('uuid')
 const { ExpressPeerServer } = require('peer');
 const peerServer = ExpressPeerServer(server, {
     debug: true
@@ -12,7 +12,6 @@ const peerServer = ExpressPeerServer(server, {
 
 const PORT = process.env.PORT || 5000;
 
-const roomId = socket.id;
 
 app.use('/peerjs', peerServer);
 // app.use(cors())
@@ -22,7 +21,7 @@ app.use(express.static('public'))
 
 
 app.get('/', (req, res) => {
-    res.redirect(`/${roomId}`);
+    res.redirect(`/${uuidV4()}`);
 });
 
 app.get('/:room', (req,res) => {
@@ -37,26 +36,27 @@ io.on('connection', socket => {
     console.log(`User connected: ${id}`);
  
 
-    socket.on('join', (roomId, username) => {
+    socket.on('join', (roomId, id) => {
         socket.join(roomId)
-        socket.to(roomId).broadcast.emit('New user joined', username)
+        socket.to(roomId).broadcast.emit('New user joined', id)
+        console.log(id, 'joined')
     })
 
    
 
-    socket.on('chat', (msg) => {
+    socket.on('chat', msg => {
         console.log('message sent: ' + msg)
-        io.to(roomId).emit('chat', id + ':' + msg)
+        io.emit('chat', id + ':' + msg )
     })
 
     socket.on('typing', () => {
         console.log('typing...')
-        io.to(roomId).emit('typing', userId ) 
+        io.emit('typing', idd ) 
     })
 
     socket.on('diconnect', () => {
         console.log('User logged out')
-        socket.to(roomId).emit('user logged off', userId)
+        socket.emit('user logged off', id)
     })
 })
 
@@ -66,3 +66,13 @@ server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
 
 
+
+
+
+// setup peerjs server with express : https://stackoverflow.com/questions/26712426/setup-peerjs-server-combined-with-express
+
+
+// uuid: https://www.npmjs.com/package/uuid
+
+
+// peerjs https://github.com/peers/peerjs
