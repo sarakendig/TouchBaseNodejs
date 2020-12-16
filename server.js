@@ -49,9 +49,13 @@ io.on('connection', socket => {
         io.emit('chat', id + ':' + msg )
     })
 
-    socket.on('typing', () => {
+    socket.on('typing', (data) => {
         console.log('typing...')
-        io.emit('typing', idd ) 
+        if(data.typing==true) {
+            io.emit('typing', id + data ) 
+        }
+       
+
     })
 
     socket.on('diconnect', () => {

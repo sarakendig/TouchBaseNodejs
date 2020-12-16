@@ -1,5 +1,9 @@
 const socket = io();
 
+var typing=false;
+var timeout=undefined;
+
+
 // PEER JS
 
 const videoGrid = document.getElementById('video-grid');
@@ -51,6 +55,12 @@ socket.on('join', id => {
   })
 
 
+  socket.on('typing', (data) => {
+    if(data.typing==true){
+      $('.tying')
+    }
+  })
+
   socket.on('logout', msg => {
       $('#message-box').append($('<li>').text('User has logged off'));
   })
@@ -83,3 +93,15 @@ socket.on('join', id => {
        video.remove()
      })
   };
+
+  function muteAudio (userVideo) {
+    let notMuted = userVideo.getAudioTracks()[0].enabled;
+
+    if (notMuted) {
+      userVideo.getAudioTracks()[0].enabled = false;
+    } else {
+      userVideo.getAudioTracks()[0].enabled = true;
+    }
+  };
+
+  
