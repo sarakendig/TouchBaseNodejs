@@ -94,13 +94,13 @@ socket.on('join', id => {
      })
   };
 
-  function muteAudio (userVideo) {
-    let notMuted = userVideo.getAudioTracks()[0].enabled;
+  function muteAudio (video) {
+    let notMuted = video.getAudioTracks()[0].enabled;
 
     if (notMuted) {
-      userVideo.getAudioTracks()[0].enabled = false;
+      video.getAudioTracks()[0].enabled = false;
     } else {
-      userVideo.getAudioTracks()[0].enabled = true;
+      video.getAudioTracks()[0].enabled = true;
     }
   };
 
