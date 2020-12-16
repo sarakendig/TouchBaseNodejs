@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/:room', (req,res) => {
-    res.render('room', {roomId: req.params.room})
+    res.render('room', {roomName: req.params.room})
 })
 
 
@@ -36,9 +36,9 @@ io.on('connection', socket => {
     console.log(`User connected: ${id}`);
  
 
-    socket.on('join', (roomId, id) => {
-        socket.join(roomId)
-        socket.to(roomId).broadcast.emit('New user joined', id)
+    socket.on('join', (roomName, id) => {
+        socket.join(roomName)
+        socket.to(roomName).broadcast.emit('New user joined', id)
         console.log(id, 'joined')
     })
 
@@ -80,3 +80,5 @@ server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
 
 // peerjs https://github.com/peers/peerjs
+
+// https://riptutorial.com/webrtc/example/29031/get-access-to-your-audio-and-video-using-getusermedia---api--hello-webrtc-

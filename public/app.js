@@ -7,8 +7,12 @@ var timeout=undefined;
 // PEER JS
 
 const videoGrid = document.getElementById('video-grid');
-const peer = new Peer;
-
+const peer = new Peer(undefined, {
+  path: "/peerjs",
+  host: "/",
+  port: "3004",
+}); 
+const peers = {};
 let videoStream;
 
 const video = document.createElement('video');
@@ -36,11 +40,13 @@ peer.on('call', call =>{
 //   SOCKET IO
 
 peer.on('open', id => {
-  socket.emit('join', ROOM_ID, id)
+  socket.emit('join', roomName, id)
+  console.log('connected')
 })
 
 socket.on('join', id => {
   connect(id, stream)
+  console.log('joined')
 })
 
   $('form').submit(e => {
@@ -92,16 +98,27 @@ socket.on('join', id => {
      call.on('close', () => {
        video.remove()
      })
+     peers[id] = call
   };
 
-  function muteAudio (video) {
-    let notMuted = video.getAudioTracks()[0].enabled;
+  function muteAudio () {
+    let notMuted = videoStream.getAudioTracks()[0].enabled;
 
     if (notMuted) {
-      video.getAudioTracks()[0].enabled = false;
+      videoStream.getAudioTracks()[0].enabled = false;
     } else {
-      video.getAudioTracks()[0].enabled = true;
+      videoStream.getAudioTracks()[0].enabled = true;
     }
   };
+
+  function stopVideo () {
+    let notStopped = videoStream.getVideoTracks()[0].enabled;
+
+    if (notStopped) {
+      videoStream.getVideoTracks()[0].enabled = false;
+    } else {
+      videoStream.getVideoTracks()[0].enabled = true;
+    }
+  }
 
   

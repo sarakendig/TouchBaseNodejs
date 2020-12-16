@@ -47,9 +47,7 @@ html {
       }
     }
   
-    #video-grid {
-      height: 92%;
-    }
+    
   
     #nav {
      width: 100%;
@@ -147,4 +145,21 @@ html {
   .nav-wrapper {
     background-color: #090909;
     /* border-bottom: .25px solid white; */
+  }
+
+
+
+  /* VIDEO */
+
+  #video-grid {
+    height: 92%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-flow: column wrap;
+  }
+
+  video {
+    height: 300px;
+    padding: 10px;
   }

@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="/main.css">
     <script src="app.js" defer></script>
     <script>
-        const roomId = "<%= roomId %>";
+        const roomName = "<%= roomName %>";
     </script>
 </head>
 
@@ -36,18 +36,18 @@
                           
 
                 <div id="video-grid">
-                    <h1 class="white-text flow-text">video</h1>
+                    
                 </div>
 
                 <div id="nav">
 
-                    <button id="videobtn" class="btn-floating btn-large waves-effect waves-light light"><i class="material-icons">headset_mic</i></button>
+                    <button onClick="muteAudio() " id="videobtn" class="btn-floating btn-large waves-effect waves-red light"><i class="material-icons">headset_mic</i></button>
 
-                    <button id="videobtn" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">volume_off</i></button>
+                    <button onClick="stopVideo()" id="videobtn" class="btn-floating btn-large waves-effect waves-red light"><i class="material-icons">videocam</i></button>
 
-                    <button id="videobtn" class="btn-floating btn-large waves-effect waves-light light"><i class="material-icons">videocam</i></button>
+                    <button a href="/" id="videobtn" class="btn-floating btn-large waves-effect waves-red light"><i class="material-icons">home</i></button>
 
-                    <button id="videobtn" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">videocam_off</i></button>
+                    
 
                     
 
