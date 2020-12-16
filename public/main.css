@@ -1,0 +1,150 @@
+html {
+    height: 100%;
+  }
+  
+    body {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+      background-color: black;
+      color: white;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+  
+  
+    main {
+      min-height: calc(100vh - 150px);
+    }
+  
+   
+  
+    textarea {
+      outline: none;
+      resize: none;
+      overflow: auto;
+      width: 100%
+    }
+  
+    input {
+      border: none;
+    }
+  
+    /* ROOM COMPONENT */
+  
+    .room{
+      position: fixed;
+      padding-left: 300px;
+      height: 100%;
+      padding-bottom: 60px;
+      
+    }
+  
+    @media only screen and (max-width : 992px) {
+      .room{
+        padding-left: 0;
+      }
+    }
+  
+    #video-grid {
+      height: 92%;
+    }
+  
+    #nav {
+     width: 100%;
+     
+    }
+  
+    #videobtn {
+      margin: 10px 50px;
+    }
+  
+    #chat-box {
+      position: fixed;
+      width: 300px;
+      right: 0;
+      top: 0;
+      margin: 0;
+      height: 100%;
+      padding-bottom: 60px;
+      z-index: 999;
+      background-color: #1d1d1d ;
+    }
+  
+    #chats {
+      overflow-y: auto;
+      height: 95%;
+      background-color: #1d1d1d ;
+    }
+  
+    #message-box {
+      height: 100%;
+      background-color: #1d1d1d;
+      color: #fff;
+      
+    }
+  
+    #sendmsg {
+      width: 100%;
+    }
+  
+    #msg {
+      width: 100%;
+      background-color: #212121;
+      border: none;
+    }
+   
+    #msgsubmit {
+      width: 100%;
+    }
+  
+  #msgs {
+    color: white;
+  }
+  
+  /* LANDING COMPONENT */
+  
+  
+  
+   #right {
+    position: fixed;
+    max-width: 500px;
+    right: 0;
+    top: 0;
+    margin: 0;
+    height: 100%;
+    padding-bottom: 60px;
+    padding-left: 50px;
+    padding-right: 50px;
+    z-index: 0;
+    background: white;
+    background: linear-gradient(0deg, rgba(189,0,252,1) 0%, rgba(29,29,29,1) 100%);
+   }
+  
+  #joinroom {
+    width: 100%;
+    background-color: #1d1d1d ;
+    text-align: center;
+    /* box-shadow: 1px 1px 5px black; */
+  }
+  
+  #roombutton {
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 15px;
+  box-shadow: 1px 1px 5px black;
+  }
+  
+  
+  #loginh1 {
+    color: white;
+    text-shadow: 5px 5px 5px #090909;
+  }
+  
+  /* NAV COMPONENT */
+  
+  .nav-wrapper {
+    background-color: #090909;
+    /* border-bottom: .25px solid white; */
+  }
