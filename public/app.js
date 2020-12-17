@@ -1,19 +1,25 @@
-const socket = io();
+const socket = io('/');
 
 var typing=false;
 var timeout=undefined;
 
 
+
 // PEER JS
 
-const videoGrid = document.getElementById('video-grid');
+// use port 443 for heroku
+
 const peer = new Peer(undefined, {
   path: "/peerjs",
   host: "/",
-  port: "3004",
+  port: "5000",
 }); 
+
+const videoGrid = document.getElementById('video-grid');
+
+
 const peers = {};
-let videoStream;
+let localVideoStream;
 
 const video = document.createElement('video');
 
@@ -23,7 +29,7 @@ navigator.mediaDevices.getUserMedia({
     audio: true
 })
 .then(stream => {
-    videoStream = stream;
+    localVideoStream = stream;
     addUserVideo(video, stream)
 })
 peer.on('call', call =>{
@@ -39,14 +45,10 @@ peer.on('call', call =>{
 
 //   SOCKET IO
 
-peer.on('open', id => {
-  socket.emit('join', roomName, id)
-  console.log('connected')
-})
 
-socket.on('join', id => {
+
+socket.on('joined', id => {
   connect(id, stream)
-  console.log('joined')
 })
 
   $('form').submit(e => {
@@ -71,7 +73,12 @@ socket.on('join', id => {
       $('#message-box').append($('<li>').text('User has logged off'));
   })
 
-
+  peer.on('open', id => {
+    console.log('My peer ID is: ' + id);
+    socket.emit('join', roomId, id);
+    console.log('peer connected')
+    
+  })
 
 
   // functions
@@ -102,23 +109,32 @@ socket.on('join', id => {
   };
 
   function muteAudio () {
-    let notMuted = videoStream.getAudioTracks()[0].enabled;
+    let notMuted = localVideoStream.getAudioTracks()[0].enabled;
 
     if (notMuted) {
-      videoStream.getAudioTracks()[0].enabled = false;
+      localVideoStream.getAudioTracks()[0].enabled = false;
     } else {
-      videoStream.getAudioTracks()[0].enabled = true;
+      localVideoStream.getAudioTracks()[0].enabled = true;
     }
   };
 
   function stopVideo () {
-    let notStopped = videoStream.getVideoTracks()[0].enabled;
+    let notStopped = localVideoStream.getVideoTracks()[0].enabled;
 
     if (notStopped) {
-      videoStream.getVideoTracks()[0].enabled = false;
+      localVideoStream.getVideoTracks()[0].enabled = false;
     } else {
-      videoStream.getVideoTracks()[0].enabled = true;
+      localVideoStream.getVideoTracks()[0].enabled = true;
     }
   }
 
+ 
   
+
+
+
+
+
+
+
+ 

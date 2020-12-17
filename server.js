@@ -2,65 +2,78 @@ const express = require('express');
 const app = express();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
-// const cors = require('cors')
-const { v4: uuidV4 } = require('uuid')
+const { v4: uuidV4 } = require('uuid');
 const { ExpressPeerServer } = require('peer');
 const peerServer = ExpressPeerServer(server, {
     debug: true
 });
 
+// PORT
 
 const PORT = process.env.PORT || 5000;
 
 
+// PEER JS
+
 app.use('/peerjs', peerServer);
-// app.use(cors())
+
+// MIDDLEWARE
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
 
+// ROUTES
+
+
 app.get('/', (req, res) => {
-    res.redirect(`/${uuidV4()}`);
+    res.redirect(`/${roomId}`);
+    
 });
 
 app.get('/:room', (req,res) => {
-    res.render('room', {roomName: req.params.room})
+    res.render('room', {rooms: req.params.room})
 })
 
+const roomId = uuidV4();
 
+
+// SOCKET
 
 io.on('connection', socket => {
+    console.log('room id:' + roomId)
     // console.log(socket)
     const { id } = socket.client;
     console.log(`User connected: ${id}`);
- 
 
-    socket.on('join', (roomName, id) => {
-        socket.join(roomName)
-        socket.to(roomName).broadcast.emit('New user joined', id)
-        console.log(id, 'joined')
+    //   socket.join(roomId);
+
+      socket.on('join', (roomId, id) => {
+        socket.join(roomId)
+      
+        socket.to(roomId).broadcast.emit('joined', id);
+      
+      
+
+        socket.on('chat', msg => {
+            console.log('message sent: ' + msg)
+            io.to(roomId).emit('chat', id + ':' + msg );
+        })
+    
+        socket.on('typing', (data) => {
+            console.log('typing...')
+            if(data.typing==true) {
+                io.emit('typing', id + data ) 
+            }
+           
+    
+        })
+
     })
 
-   
-
-    socket.on('chat', msg => {
-        console.log('message sent: ' + msg)
-        io.emit('chat', id + ':' + msg )
-    })
-
-    socket.on('typing', (data) => {
-        console.log('typing...')
-        if(data.typing==true) {
-            io.emit('typing', id + data ) 
-        }
-       
-
-    })
-
-    socket.on('diconnect', () => {
+    socket.on('logout', () => {
         console.log('User logged out')
-        socket.emit('user logged off', id)
+        socket.emit('user ${id} logged off')
     })
 })
 
